@@ -20,7 +20,7 @@ class Graph:
         Add a directed edge to the graph.
         """
         if v1 in self.vertices and v2 in self.vertices:
-            self.vertices[v1].add[v2]
+            self.vertices[v1].add(v2)
         else:
             raise IndexError("At least on of the vertices does not exist")
 
@@ -44,10 +44,12 @@ class Graph:
         while queue.size() > 0: 
             vertex = queue.dequeue()
             if vertex not in visited:
+                print(vertex)
                 visited.add(vertex)
-                neighbors = self.get_neighbors(vertex)
-                queue.enqueue(neighbors)
-
+                # neighbors = self.get_neighbors(vertex)
+                # queue.enqueue(neighbors)
+                for next_vert in self.get_neighbors(vertex):
+                    queue.enqueue(next_vert)
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -59,11 +61,12 @@ class Graph:
         while stack.size() > 0: 
             vertex = stack.pop()
             if vertex not in visited:
+                # print(vertex)
                 visited.add(vertex)
-                neighbors = self.get_neighbors(vertex)
-                stack.push(neighbors)
-
-    def dft_recursive(self, starting_vertex):
+            for next_vert in self.get_neighbors(vertex):
+                stack.push(next_vert)
+        
+    def dft_recursive(self, starting_vertex, visited=None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
@@ -147,7 +150,7 @@ class Graph:
                     path_copy.append(neighbor)
                     s.push(path_copy)
 
-    def dfs_recursive(self, starting_vertex, target_vertex):
+    def dfs_recursive(self, starting_vertex, target_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
