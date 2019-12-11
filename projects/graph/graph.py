@@ -44,7 +44,7 @@ class Graph:
         while queue.size() > 0: 
             vertex = queue.dequeue()
             if vertex not in visited:
-                print(vertex)
+                # print(vertex)
                 visited.add(vertex)
                 # neighbors = self.get_neighbors(vertex)
                 # queue.enqueue(neighbors)
