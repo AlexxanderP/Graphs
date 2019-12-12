@@ -1,4 +1,9 @@
 
+from itertools import combinations
+from math import ceil
+from random import sample
+from collections import deque
+
 
 class User:
     def __init__(self, name):
@@ -47,9 +52,15 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        ids = range(1, numUsers+1)
+        for i in ids:
+            self.add_user(f"User {i}")
         # Create friendships
-
+        possible_pairs = [*combinations(ids, 2)]
+        numPairs = ceil((numUsers * avgFriendships) / 2)
+        pairs = sample(possible_pairs, k=numPairs)
+        for (pair) in pairs:
+            self.add_friendship(*pair)
     def get_all_social_paths(self, user_id):
         """
         Takes a user's user_id as an argument
@@ -61,7 +72,17 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        queue = deque()
+        queue.append([user_id])
+        while len(queue) > 0:
+            path = queue.popleft()
+            person = path[-1]
+            friends = {p for p in self.friendships[person] if p is not user_id and p not in visited}
+            for f in friends:
+                visited[f] = [*path, f]
+                queue.append(visited[f])
         return visited
+
 
 
 if __name__ == '__main__':
